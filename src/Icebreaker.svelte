@@ -7,7 +7,7 @@ import LoadingSpinner from "./LoadingSpinner.svelte";
   export let question : string;
   
   const shown = writable<boolean>(false);
-  const url = writable<string>("");
+  const background = writable<string>("");
   const displayedQuestion = writable<string>("");
 
   const apiKey = process.env.UNSPLASH_API_KEY;
@@ -15,24 +15,36 @@ import LoadingSpinner from "./LoadingSpinner.svelte";
   $: {
     shown.set(false);
 
+
+    const finish = (newBackground : string) => {
+      background.set(newBackground);
+      shown.set(true);
+      displayedQuestion.set(question);
+    }
+
     fetch(`https://api.unsplash.com/photos/random?client_id=${apiKey}&query=${keyword}`)
-    .then(res => res.json())
+    .then(res => {
+      if (!res.ok) throw "Non-ok result from Unsplash";
+      return res.json();
+    })
     .then(json => {
       console.log(JSON.stringify(json));
       let img = new Image();
       img.src = json.urls.regular;
       img.onload = () => {
-        url.set(img.src);
-        shown.set(true);
-        displayedQuestion.set(question);
+        finish(`url(${img.src})`);
+      }
+      img.onerror = () => {
+        finish('black');
       }
     })
     .catch(() => {
+      finish('black');
       // TODO error handling
     });  }
 </script>
 
-<div class="icebreaker {$shown ? "shown" : "hidden"}" style="background-image:url({$url})">
+<div class="icebreaker {$shown ? "shown" : "hidden"}" style="background:{$background}">
   <h1>{$displayedQuestion}</h1>
 </div>
 {#if !$shown}
@@ -41,13 +53,13 @@ import LoadingSpinner from "./LoadingSpinner.svelte";
 
 <style>
   div.icebreaker {
-    transition: opacity 250ms;
+    transition: opacity 500ms;
     width:100%;
     height:100%;
     position:absolute;
     top:0px;
     left:0px;
-    background-size:cover;
+    background-size:cover !important;
     display:flex;
     align-items: center;
     justify-content: center;
