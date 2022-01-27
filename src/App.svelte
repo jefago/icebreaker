@@ -1,10 +1,15 @@
 <script lang="ts">
 	import { writable } from 'svelte/store'
+import BackgroundImage from './BackgroundImage.svelte';
 	import questions from './questions'
 
-	const message = writable();
+	const message = writable<string[] | undefined>(undefined);
 	
-	$: question = $message ? $message[0] : '';
+	let question, keyword : string;
+	
+	$: if ($message) {
+		[question, keyword] = $message;
+	}
 
 	function pickRandomMessage() {
 		const index = Math.floor(Math.random() * questions.length);
@@ -16,30 +21,46 @@
 </script>
 
 <main>
-	<h1>{question}</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-	<button on:click={() => pickRandomMessage()}>Randomize!</button>
-
+	{#if keyword }
+		<BackgroundImage keyword={keyword} />	
+	{/if }
+	<div>
+		<h1>{question ?? 'Click Randomize to generate an icebreaker question!'}</h1>
+		<button on:click={() => pickRandomMessage()}>Randomize!</button>
+	</div>
 </main>
 
 <style>
 	main {
 		text-align: center;
 		padding: 1em;
-		max-width: 240px;
 		margin: 0 auto;
 	}
 
 	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
 		font-size: 4em;
 		font-weight: 100;
+		position:relative;
+		z-index: 100;
+
+		height: 3.6em;
+		line-height:1.2em;
+		font-family:Impact,sans-serif;
+		font-weight: bold;
+		color:white;
+		text-shadow:0px 0px 8px black;
+
 	}
 
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
+	button {
+		position:relative;
+		z-index: 100;
+		font-family:sans-serif;
 	}
+
+	div {
+		width:100%;
+	}
+
+	
 </style>
