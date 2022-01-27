@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { writable } from 'svelte/store'
-import BackgroundImage from './BackgroundImage.svelte';
+import BackgroundImage from './Icebreaker.svelte';
 	import questions from './questions'
 
 	const message = writable<string[] | undefined>(undefined);
@@ -22,10 +22,9 @@ import BackgroundImage from './BackgroundImage.svelte';
 
 <main>
 	{#if keyword }
-		<BackgroundImage keyword={keyword} />	
+		<BackgroundImage keyword={keyword} question={question}/>	
 	{/if }
 	<div>
-		<h1>{question ?? 'Click Randomize to generate an icebreaker question!'}</h1>
 		<button on:click={() => pickRandomMessage()}>Randomize!</button>
 	</div>
 </main>
@@ -37,30 +36,17 @@ import BackgroundImage from './BackgroundImage.svelte';
 		margin: 0 auto;
 	}
 
-	h1 {
-		font-size: 4em;
-		font-weight: 100;
-		position:relative;
-		z-index: 100;
-
-		height: 3.6em;
-		line-height:1.2em;
-		font-family:Impact,sans-serif;
-		font-weight: bold;
-		color:white;
-		text-shadow:0px 0px 8px black;
-
+	div {
+		position:absolute;
+		top:80%;
+		left:0px;
+		width:100%;
+		text-align:center;
+		z-index:100;
 	}
 
 	button {
-		position:relative;
-		z-index: 100;
-		font-family:sans-serif;
+		font-family: sans-serif;
 	}
-
-	div {
-		width:100%;
-	}
-
 	
 </style>
