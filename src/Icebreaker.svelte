@@ -11,17 +11,13 @@ import LoadingSpinner from "./LoadingSpinner.svelte";
     profileUrl : string;
   }
 
-
   const shown = writable<boolean>(false);
   const background = writable<string>("");
   const displayedQuestion = writable<string>("");
   const authorInfo = writable<AuthorInfo|null>(null);
 
-  const apiKey = process.env.UNSPLASH_API_KEY;
-
   $: {
     shown.set(false);
-
 
     const finish = (newBackground : string, author?: AuthorInfo) => {
       background.set(newBackground);
@@ -30,7 +26,7 @@ import LoadingSpinner from "./LoadingSpinner.svelte";
       authorInfo.set(author ?? null);
     }
 
-    fetch(`https://api.unsplash.com/photos/random?client_id=${apiKey}&query=${keyword}`)
+    fetch(`https://icebreaker.netlify.app/.netlify/functions/unsplash-search?keyword=${keyword}`)
     .then(res => {
       if (!res.ok) throw "Non-ok result from Unsplash";
       return res.json();
