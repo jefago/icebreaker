@@ -1,8 +1,11 @@
+<script context="module" lang="ts">
+  const API_URL = process.env.API_URL ;
+	const API_PATH = (API_URL).includes("?") ? `${(API_URL)}&keyword=` : `${(API_URL)}?keyword=`;
+</script>
+
 <script lang="ts">
   import { writable } from "svelte/store";
   import LoadingSpinner from "./LoadingSpinner.svelte";
-
-  const API_SERVER = process.env.API_SERVER;
 
   export let keyword : string;
   export let question : string;
@@ -27,7 +30,7 @@
       authorInfo.set(author ?? null);
     }
 
-    fetch(`${API_SERVER}/.netlify/functions/unsplash-search?keyword=${keyword}`)
+    fetch(`${API_PATH}${keyword}`)
     .then(res => {
       if (!res.ok) throw "Non-ok result from Unsplash";
       return res.json();
