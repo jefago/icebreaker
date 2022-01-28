@@ -53,9 +53,9 @@
   {#if $authorInfo }
     <div class="authorInfo">
       Photo by
-      <a href="{$authorInfo.profileUrl}?utm_source=Icebreaker&utm_medium=referral" rel="noopener noreferrer">{$authorInfo.name}</a>
+      <a href="{$authorInfo.profileUrl}?utm_source=Eisbrecher&utm_medium=referral" rel="noopener noreferrer">{$authorInfo.name}</a>
       on
-      <a href="https://unsplash.com?utm_source=Icebreaker&utm_medium=referral" rel="noopener noreferrer">Unsplash</a></div>
+      <a href="https://unsplash.com?utm_source=Eisbrecher&utm_medium=referral" rel="noopener noreferrer">Unsplash</a></div>
   {/if}
 </div>
 {#if !$shown}
