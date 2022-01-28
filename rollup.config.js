@@ -8,9 +8,10 @@ import typescript from '@rollup/plugin-typescript';
 import css from 'rollup-plugin-css-only';
 
 import dotenv from "dotenv"
-dotenv.config()
+dotenv.config(process.env.DOTENV_FILE ? {path: process.env.DOTENV_FILE} : {})
 
 const production = !process.env.ROLLUP_WATCH;
+const netlifyFunction = process.env.USE_NETLIFY_FUNCTION;
 
 function serve() {
 	let server;
@@ -31,6 +32,41 @@ function serve() {
 			process.on('exit', toExit);
 		}
 	};
+}
+
+function serveWithNetlifyFunction() {
+	let netlifyFunctionServer;
+
+	function toExit() {
+		if (netlifyFunctionServer) netlifyFunctionServer.kill(0);
+	}
+
+	return {
+		writeBundle() {
+			if (netlifyFunctionServer) return;
+
+			netlifyFunctionServer = require('child_process').spawn('npx', ['netlify', 'functions:serve'], {
+				stdio: ['ignore', 'inherit', 'inherit'],
+				shell: true
+			});
+
+			const polka = require('polka')
+			const sirv = require('sirv');
+			const httpProxyMiddleware = require('http-proxy-middleware')
+
+			polka()
+				.use('/.netlify', httpProxyMiddleware.createProxyMiddleware({ target: 'http://localhost:9999', changeOrigin: true}))
+				.use(sirv('public', {dev: true}))
+				.listen(8080, err => {
+					if (err) throw err;
+					console.log(`Listening on localhost:8080`);
+				});
+
+			process.on('SIGTERM', toExit);
+			process.on('exit', toExit);
+		}
+
+	}
 }
 
 export default {
@@ -74,7 +110,7 @@ export default {
 
 		// In dev mode, call `npm run start` once
 		// the bundle has been generated
-		!production && serve(),
+		!production && (netlifyFunction ? serveWithNetlifyFunction() : serve()),
 
 		// Watch the `public` directory and refresh the
 		// browser on changes when not in production
