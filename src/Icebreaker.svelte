@@ -72,6 +72,13 @@ import LoadingSpinner from "./LoadingSpinner.svelte";
 		font-weight: bold;
 		color:white;
 		text-shadow:0px 0px 8px black;
+    margin:0em .5em;
+  }
+
+  @media (max-width:600px) {
+    h1 {
+      font-size:2em;
+    }
   }
 
   div.hidden {
