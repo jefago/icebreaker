@@ -1,6 +1,6 @@
 <script context="module" lang="ts">
   const API_URL = process.env.API_URL ;
-	const API_PATH = (API_URL).includes("?") ? `${(API_URL)}&keyword=` : `${(API_URL)}?keyword=`;
+	const API_PATH = (API_URL).includes("?") ? `${(API_URL)}&query=` : `${(API_URL)}?query=`;
 </script>
 
 <script lang="ts">
