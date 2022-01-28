@@ -36,7 +36,6 @@ import LoadingSpinner from "./LoadingSpinner.svelte";
       return res.json();
     })
     .then(json => {
-      console.log(JSON.stringify(json, null, 2));
       let img = new Image();
       img.src = json.urls.regular;
       img.onload = () => {
