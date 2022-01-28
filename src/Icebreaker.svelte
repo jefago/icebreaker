@@ -26,7 +26,7 @@ import LoadingSpinner from "./LoadingSpinner.svelte";
       authorInfo.set(author ?? null);
     }
 
-    fetch(`https://icebreaker.netlify.app/.netlify/functions/unsplash-search?keyword=${keyword}`)
+    fetch(`https://eisbrecher.io/.netlify/functions/unsplash-search?keyword=${keyword}`)
     .then(res => {
       if (!res.ok) throw "Non-ok result from Unsplash";
       return res.json();
