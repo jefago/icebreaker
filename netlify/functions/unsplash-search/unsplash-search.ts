@@ -7,7 +7,7 @@ export const handler: Handler = async (event, context) => {
     const res = await fetch(`https://api.unsplash.com/photos/random?client_id=${process.env.UNSPLASH_API_KEY}&query=${keyword}`);
     if (!res.ok) {
       console.log(await res.text());
-      throw "Non-OK results from Unsplash";
+      throw `Non-OK result (${res.status}) from Unsplash`;
     }
     const json = await res.json();
     return {
@@ -15,7 +15,7 @@ export const handler: Handler = async (event, context) => {
       body: JSON.stringify(json),
     }
   } catch (e) {
-    console.log(JSON.stringify(e));
+    console.log(e);
     return {
       statusCode: 500
     }
