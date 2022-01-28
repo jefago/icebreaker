@@ -1,7 +1,8 @@
 <script lang="ts">
   import { writable } from "svelte/store";
-import LoadingSpinner from "./LoadingSpinner.svelte";
+  import LoadingSpinner from "./LoadingSpinner.svelte";
 
+  const API_SERVER = process.env.API_SERVER;
 
   export let keyword : string;
   export let question : string;
@@ -26,7 +27,7 @@ import LoadingSpinner from "./LoadingSpinner.svelte";
       authorInfo.set(author ?? null);
     }
 
-    fetch(`https://eisbrecher.io/.netlify/functions/unsplash-search?keyword=${keyword}`)
+    fetch(`${API_SERVER}/.netlify/functions/unsplash-search?keyword=${keyword}`)
     .then(res => {
       if (!res.ok) throw "Non-ok result from Unsplash";
       return res.json();

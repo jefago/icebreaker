@@ -46,7 +46,7 @@ export default {
 		svelte({
 			preprocess: sveltePreprocess({ 
 				sourceMap: !production,
-				replace: [["process.env.UNSPLASH_API_KEY", `"${process.env.UNSPLASH_API_KEY}"`]]
+				replace: [["process.env.API_SERVER", `"${process.env.API_SERVER}"`]]
 			}),
 			compilerOptions: {
 				// enable run-time checks when not in production
