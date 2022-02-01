@@ -51,6 +51,9 @@ const questions : string[][] = [
   ['What’s the weirdest food you’ve ever eaten?', 'food'],
   ['What’s the most memorable restaurant you’ve been to?', 'restaurant'],
   ['What was the last hobby you picked up?', 'hobby'],
+  ['Is there any TV show you’ve been watching regularly or recently?', 'tv'],
+  ['What movie did you recently watch that you liked?', 'movie'],
+  ['What do you usually get up to on the weekends?', 'weekend'],
 ]
 
 export default questions;
